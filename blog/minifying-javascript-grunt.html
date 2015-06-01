@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]>
+<html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>
+<html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>
+<html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+	<!-- Basic Page Needs
+	================================================== -->
+	<meta charset="utf-8">
+	<title>Mazira - Minifying JavaScript with Grunt</title>
+	<meta name="description"
+		  content="This post will cover JavaScript minification using Google Closure Compiler and Grunt. ">
+	<meta name="author" content="Daniel Short, Mazira LLC">
+	<!-- Mobile Specific Metas
+	================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- CSS
+	================================================== -->
+	<!-- Bootstrap  -->
+	<link type="text/css" rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+	<!-- web font  -->
+	<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,800" rel="stylesheet" type="text/css">
+	<!-- plugin css  -->
+	<link rel="stylesheet" type="text/css" href="../js-plugin/animation-framework/animate.css"/>
+	<link rel="stylesheet" type="text/css" href="../js-plugin/magnific-popup/magnific-popup.css"/>
+	<!-- icon fonts -->
+	<link type="text/css" rel="stylesheet" href="../font-icons/custom-icons/css/custom-icons.css">
+	<link type="text/css" rel="stylesheet" href="../font-icons/custom-icons/css/custom-icons-ie7.css">
+	<!-- Custom css -->
+	<link type="text/css" rel="stylesheet" href="../css/layout.css">
+	<link type="text/css" id="colors" rel="stylesheet" href="../css/colors.css">
+	<link type="text/css" id="syntax" rel="stylesheet" href="../css/tomorrow.css">
+	<!--[if lt IE 9]>
+	<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
+	<script src="../js/modernizr-2.6.1.min.js"></script>
+	<!DOCTYPE html>
+<!--[if lt IE 7 ]>
+<html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>
+<html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>
+<html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+	<!-- Basic Page Needs
+	<script>
+
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-35559722-1', 'mazira.com');
+		ga('send', 'pageview');
+
+	</script>
+</head>
+<body data-spy="scroll" data-target="#scrollTarget" data-offset="150">
+
+<!-- body -->
+
+<!-- header -->
+<header id="mainHeader" class="navbar-fixed-top" role="banner">
+	<div class="container">
+		<nav class="navbar navbar-default scrollMenu" role="navigation">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+						data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span></button>
+				<a class="navbar-brand" href="../../"><img src="../images/main-logo.png"
+															 alt=""/></a></div>
+			<div class="collapse navbar-collapse navbar-ex1-collapse" id="scrollTarget">
+				<ul class="nav navbar-nav pull-right">
+					<li><a href="../../"><i class="icon-home-outline"></i>Home</a></li>
+					<li class="active"><a href="../blog"><i class="icon-comment"></i>Blog</a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+</header>
+<!-- end header -->
+
+<!-- content -->
+<section class="slice" id="news">
+	<div class="container imgHover">
+		<div class="row">
+			<div class="col-lg-10 col-lg-offset-1">
+				<article>
+					<h1>Minifying JavaScript with Grunt</h1>
+
+					<div class="subTitle">by Daniel Short</div>
+					<div class="date">2013/09/20</div>
+					<h2 id="minifying-code">MINIFYING CODE</h2>
+<p>When sending resources such as scripts, CSS files, and other code to a web page, it is often wise to minify them. Minification involves removing unnecessary characters from code without affecting the function of the code. This can include removing white spaces, simplifying variable names, and deleting code which is not executed. The purpose of minification is twofold: to decrease the size of the resources that a web page needs in order to improve transfer speeds, to make the code harder for humans to read and so deter people from reusing or tampering with the code.</p>
+<p>At Mazira we often have projects containing many resources which need to be minified. For minifying JavaScript files, we use <a href="https://developers.google.com/closure/compiler/">Google Closure Compiler</a>. It is especially useful as it provides three levels of minification: WHITESPACE_ONLY, SIMPLE_OPTIMIZATIONS, ADVANCED_OPTIMIZATIONS. These levels determine how much the original code is changed. Using the <a href="http://closure-compiler.appspot.com/home">Closure Compiler service website</a>, we can minifiy code in our browser, or send HTTP POST requests containing non-minified code and receive minified code in response. This works well, but presents a problem: How to minify multiple files at once, rather than individually minifying all the files?</p>
+<h2 id="introducing-grunt">INTRODUCING GRUNT</h2>
+<p>On its home page, <a href="http://gruntjs.com/">Grunt</a> is aptly described as a &quot;JavaScript task runner.&quot; Grunt helps automate repetitive tasks like minification. It has a large selection of both official and unofficial plugins which have a wide array of functions. While it has an official plugin for minification, we will use the <a href="https://github.com/gmarty/grunt-closure-compiler">grunt-closure-compiler</a> plugin as it utilizes Google Closure Compiler for its minification.</p>
+<h2 id="minifying-code-with-grunt">MINIFYING CODE WITH GRUNT</h2>
+<p>To install Grunt, see the <a href="http://gruntjs.com/getting-started">getting started</a> guide. After Grunt has been installed, we must install the grunt-closure-compiler plugin. Be sure to create a package.json file as shown by the guide. This file will list grunt-closure-compiler as one of its dependencies, and thus allow us to load the closure-compiler task in our Gruntfile.js.</p>
+<pre><code>$ npm install grunt-closure-compiler</code></pre>
+<p>The structure for our Gruntfile.js will be as follows:</p>
+<h3 id="gruntfile-js">Gruntfile.js</h3>
+<pre><code> module.exports = function(grunt) {
+
+    grunt.initConfig({
+        //closure compiler task
+    });
+
+    grunt.loadNpmTasks(‘grunt-closure-compiler’);
+};</code></pre>
+<p>Inside <code>grunt.initConfig</code> we can define our closure compiler task. We use <code>grunt.loadNpmTasks(‘grunt-closure-compiler’)</code> to enable this plugin in our Gruntfile.</p>
+<p>The closure compiler task will look something like this:</p>
+<pre><code>&#39;closure-compiler&#39;: {
+        simple: {
+            js: [
+                &#39;/path/to/js/simple1.js&#39;,
+                &#39;/path/to/js/simple2.js&#39;,
+            ],
+            jsOutputFile: &#39;/path/to/minified/js/simple.min.js&#39;,
+            noreport: true,
+            options: {
+                compilation_level: &#39;SIMPLE_OPTIMIZATIONS&#39;,
+                warning_level:&quot;DEFAULT&quot;
+            }
+        },
+        adv: {
+            js: [
+                &#39;/path/to/js/adv1.js&#39;
+                &#39;/path/to/js/adv2.js&#39;
+            ],
+            jsOutputFile: &#39;/path/to/minified/js/adv.min.js&#39;,
+            noreport: true,
+            options: {
+                compilation_level: &#39;ADVANCED_OPTIMIZATIONS&#39;,
+                warning_level:&quot;DEFAULT&quot;
+            }
+        }
+}</code></pre>
+<p>The <code>js</code> array specifies the sources of the javascript to be concatenated and minified. The <code>jsOutputFile</code> field contains the file where the minified code will be saved. The <code>noreport</code> option is set to true in order to prevent a text file, containing warnings from Google Closure Compiler, from being generated. In the <code>compilation_level</code> field we indicate the level of minification which we want. For more information on these options and other available properties check the <a href="https://developers.google.com/closure/compiler/docs/api-ref">Closure Compiler Service API Reference</a>.</p>
+<p>The final Grunt file will look like this:</p>
+<h3 id="gruntfile-js">Gruntfile.js</h3>
+<pre><code>module.exports = function(grunt) {
+
+    grunt.initConfig({
+        &#39;closure-compiler&#39;: {
+            simple: {
+                js: [
+                    &#39;/path/to/js/simple1.js&#39;,
+                    &#39;/path/to/js/simple2.js&#39;,
+                ],
+                jsOutputFile: &#39;/path/to/minified/js/simple.min.js&#39;,
+                noreport: true,
+                options: {
+                    compilation_level: &#39;SIMPLE_OPTIMIZATIONS&#39;,
+                    warning_level:&quot;DEFAULT&quot;
+                }
+            },
+            adv: {
+                js: [
+                    &#39;/path/to/js/adv1.js&#39;
+                    &#39;/path/to/js/adv2.js&#39;
+                ],
+                jsOutputFile: &#39;/path/to/minified/js/adv.min.js&#39;,
+                noreport: true,
+                options: {
+                    compilation_level: &#39;ADVANCED_OPTIMIZATIONS&#39;,
+                    warning_level:&quot;DEFAULT&quot;
+                }
+            }
+        }
+    });
+
+    grunt.loadNpmTasks(‘grunt-closure-compiler’);
+};</code></pre>
+<p>To run the Grunt task, enter the command</p>
+<pre><code>$ grunt closure-compiler</code></pre>
+<p>Alternatively, each subtask of the Grunt task can be run individually:</p>
+<pre><code>$ grunt closure-compiler:simple</code></pre>
+<p>or</p>
+<pre><code>$ grunt closure-compiler:adv</code></pre>
+<p>This Grunt file is fairly simple in that it only has one task. At Mazira we usually use Grunt files which have multiple tasks. I would recommend checking the <a href="http://gruntjs.com/plugins">list of plugins</a> for Grunt to streamline other repetitive tasks which you may have.</p>
+
+				</article>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- end content -->
+
+<!-- footer -->
+<footer>
+	<section id="mainFooter">
+		<div class="container" id="footer">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="footerWidget">
+						<img src="../images/main-logo.png" alt="Mazira" id="footerLogo" height="30px">
+
+						<p><a href="https://mazira.com" title="Mazira, data management company">Mazira</a> is a data and
+							document management company. We build software to store and organize large data collections
+							so that it can become useful. Data by itself isn't very useful unless it is distilled into
+							useful information!</p>
+					</div>
+				</div>
+
+				<div class="col-sm-6">
+					<div class="footerWidget">
+
+						<h3>Mazira, LLC</h3>
+						<address>
+							<p><i class="icon-location"></i>316 E. Court Street<br>
+								Iowa City, IA 52240-4767 USA<br>
+								<i class="icon-phone"></i><a href="tel://1-866-319-6068">+1 (866) 319-6068</a> <br>
+								<i class="icon-mail-alt"></i><a href="mailto:info@mazira.com">info@mazira.com</a></p>
+						</address>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</footer>
+<section id="footerRights">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<p>Copyright © 2014 <a href="https://mazira.com" target="blank">Mazira, LLC</a>
+					<br/>All rights reserved.
+				</p>
+			</div>
+			<div class="col-sm-6">
+				<ul class="socialNetwork pull-right">
+					<li><a href="https://www.facebook.com/pages/Mazira/216219471762517" class="tips"
+						   title="follow us on Facebook"><i class="icon-facebook-1 iconRounded"></i></a></li>
+					<li><a href="https://twitter.com/Mazira" class="tips" title="follow us on Twitter"
+						   target="_blank"><i class="icon-twitter-bird iconRounded"></i></a></li>
+					<li><a href="http://www.linkedin.com/company/mazira" class="tips" title="follow us on Linkedin"><i
+							class="icon-linkedin-1 iconRounded"></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<script type='text/javascript'>(function () {
+	var done = false;
+	var script = document.createElement('script');
+	script.async = true;
+	script.type = 'text/javascript';
+	script.src = 'https://widget.purechat.com/VisitorWidget/WidgetScript';
+	document.getElementsByTagName('HEAD').item(0).appendChild(script);
+	script.onreadystatechange = script.onload = function (e) {
+		if ( !done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete') ) {
+			var w = new PCWidget({ c : '5b0f8ffb-7a8d-45a8-bd0b-7676d8d75d78', f : true });
+			done = true;
+		}
+	};
+})();</script>
+
+
+<!-- end footer -->
+
+<!-- end body -->
+
+<script type="text/javascript" src="../js-plugin/respond/respond.min.js"></script>
+<script type="text/javascript" src="../js-plugin/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="../js-plugin/jquery-ui/jquery-ui-1.8.23.custom.min.js"></script>
+<!-- third party plugins  -->
+<script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="../js-plugin/easing/jquery.easing.1.3.js"></script>
+
+<script type="text/javascript" src="../js-plugin/magnific-popup/jquery.magnific-popup.min.js"></script>
+<script type="text/javascript" src="../js-plugin/jquery.sharrre-1.3.4/jquery.sharrre-1.3.4.min.js"></script>
+
+<!-- Custom  -->
+<script type="text/javascript" src="../js/custom.js"></script>
+<script type="text/javascript" src="../js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]>
+<html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>
+<html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>
+<html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+	<!-- Basic Page Needs
+	================================================== -->
+	<meta charset="utf-8">
+	<title>Mazira - Make Large Collections of Information Pages Available to Google Using Sitemaps</title>
+	<meta name="description"
+		  content="A blog post about using XML sitemaps to make large collections of data pages accessible with Google search. ">
+	<meta name="author" content="Kazimier Smith, Mazira LLC">
+	<!-- Mobile Specific Metas
+	================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- CSS
+	================================================== -->
+	<!-- Bootstrap  -->
+	<link type="text/css" rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+	<!-- web font  -->
+	<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,800" rel="stylesheet" type="text/css">
+	<!-- plugin css  -->
+	<link rel="stylesheet" type="text/css" href="../js-plugin/animation-framework/animate.css"/>
+	<link rel="stylesheet" type="text/css" href="../js-plugin/magnific-popup/magnific-popup.css"/>
+	<!-- icon fonts -->
+	<link type="text/css" rel="stylesheet" href="../font-icons/custom-icons/css/custom-icons.css">
+	<link type="text/css" rel="stylesheet" href="../font-icons/custom-icons/css/custom-icons-ie7.css">
+	<!-- Custom css -->
+	<link type="text/css" rel="stylesheet" href="../css/layout.css">
+	<link type="text/css" id="colors" rel="stylesheet" href="../css/colors.css">
+	<link type="text/css" id="syntax" rel="stylesheet" href="../css/tomorrow.css">
+	<!--[if lt IE 9]>
+	<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
+	<script src="../js/modernizr-2.6.1.min.js"></script>
+	<!DOCTYPE html>
+<!--[if lt IE 7 ]>
+<html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>
+<html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>
+<html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+	<!-- Basic Page Needs
+	<script>
+
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-35559722-1', 'mazira.com');
+		ga('send', 'pageview');
+
+	</script>
+</head>
+<body data-spy="scroll" data-target="#scrollTarget" data-offset="150">
+
+<!-- body -->
+
+<!-- header -->
+<header id="mainHeader" class="navbar-fixed-top" role="banner">
+	<div class="container">
+		<nav class="navbar navbar-default scrollMenu" role="navigation">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+						data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span></button>
+				<a class="navbar-brand" href="../../"><img src="../images/main-logo.png"
+															 alt=""/></a></div>
+			<div class="collapse navbar-collapse navbar-ex1-collapse" id="scrollTarget">
+				<ul class="nav navbar-nav pull-right">
+					<li><a href="../../"><i class="icon-home-outline"></i>Home</a></li>
+					<li class="active"><a href="../blog"><i class="icon-comment"></i>Blog</a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+</header>
+<!-- end header -->
+
+<!-- content -->
+<section class="slice" id="news">
+	<div class="container imgHover">
+		<div class="row">
+			<div class="col-lg-10 col-lg-offset-1">
+				<article>
+					<h1>Make Large Collections of Information Pages Available to Google Using Sitemaps</h1>
+
+					<div class="subTitle">by Kazimier Smith</div>
+					<div class="date">2013/08/28</div>
+					<h2 id="introduction">Introduction</h2>
+<p>Here at <a href="http://mazira.com">Mazira</a>, one of the software platforms I helped develop was <a href="http://www.bondpdf.com">BondPDF</a>, an online suite for managing large collections of financial bonds.  One important feature of BondPDF is its public bond data pages, which allow users that know the <a href="http://en.wikipedia.org/wiki/International_Securities_Identification_Number">ISIN</a> (an identification number) of a bond to enter it as part of a URL and view publicly available information about the corresponding bond.  These pages are generated automatically:  a request to a URL containing an ISIN queries the BondPDF database and responds with the correct data.  Many websites contain pages like this, especially those that contain large amounts of data.</p>
+<p>OK, so wouldn’t it be useful if these huge databases were easily accessible via Google?  Yes, but there’s a problem with these kinds of pages:  there are no links to them from elsewhere on the site.  In the case of BondPDF, there are hundreds of thousands of bonds with unique ISINs that could be displayed, so there cannot possibly be links to each one.  This creates a major problem for Google’s “<a href="https://support.google.com/webmasters/answer/182072?hl=en">Googlebot</a>,” which finds new pages by following links.  Googlebot can’t access the pages, so they won’t show up on Google, which makes the database much less user friendly.</p>
+<h2 id="sitemap-files">Sitemap Files</h2>
+<p>Fortunately there’s a solution to this common issue:  <a href="https://support.google.com/webmasters/answer/156184?hl=en&amp;ref_topic=8476">sitemaps</a>.  Sitemaps are <a href="http://www.sitemaps.org/protocol.html">specially formatted XML documents</a> that contain URLs.  Sitemaps can be submitted to Google with <a href="https://www.google.com/webmasters/tools/home?hl=en">Webmaster Tools</a>.  When Google receives a sitemap, Googlebot knows about the URLs contained in the sitemap, and knows to crawl those pages and add their information to Google’s search index (although Google doesn’t guarantee all URLs in a sitemap will be indexed).  Sitemaps are a very useful way to inform Googlebot of URLs it might not find otherwise.  And they are very straightforward to write up -- if you only have a few URLs you need added.  But commonly, as I mentioned above, a site will have <em>thousands</em> of URLs that Googlebot couldn’t normally find.  It would be very inefficient to write out all these URLs by hand, not to mention it wouldn’t update as new pages were added to the database.  Fortunately, sitemaps follow a very strict structure that’s easy to replicate with a script.  Let’s look into how to go about this.</p>
+<p>I’ll be using Node JS for sitemap generation, but the process should be very similar in most languages.  Let’s look at some code:</p>
+<pre><code>var HEADING = &#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;\n\n&#39;;
+HEADING += &#39;&lt;urlset xmlns=&quot;http://www.sitemaps.org/&#39;
+HEADING += &#39;schemas/sitemap/0.9&quot;&gt;\n\n&#39;;
+var count = 1;
+
+// Some function that gets the information necessary to
+// generate the URLs
+var isins = getIsins();
+var numSitemaps = Math.ceil(isins.length / 50000);
+var output = new Array();
+
+while ( count &lt;= numSitemaps ) {
+    output[count - 1] = HEADING;
+
+    var i = 0;
+    for ( i = (count - 1) * 50000; i &lt; ((count * 50000) &gt;
+        isins.length ? isins.length : count * 50000); i++ ) {
+
+        output[count - 1] += &#39;\t&lt;url&gt;\n\t\t&lt;loc&gt;&#39; +
+            &#39;http://www.bondpdf.com/bonds/&#39;;
+        output[count - 1] += isins[i] + &#39;&lt;/loc&gt;\n\t&lt;/url&gt;\n&#39;;
+    }
+
+    console.log(&#39;count = &#39; + count + &#39;; i = &#39; + i);
+    output[count - 1] += &#39;\n&lt;/urlset&gt;&#39;;
+    count++;
+}
+
+process.nextTick(function () {
+    callback(null, numSitemaps, output);
+});</code></pre>
+<p>First we generate the main heading that begins the sitemap.  It specifies the XML version, encoding, and sitemap protocol to use.  Then we call a function that gets the information we need to generate the URLs.  Next we set up a loop to go through all the information we need, and generate our URLs.  One very important fact that adds a few odd things to this portion of the code is that that a single sitemap file can only contain 50,000 URLs.  With BondPDF and certainly many other cases 50,000 is not sufficient for all the pages that need to be indexed.  So the loop is designed to create an array of sitemap text that can then be written to individual files.  Really it’s fairly simple code which shouldn’t be difficult to adapt to any type of variable URLs.  One improvement I could implement with Node JS is to stream the information to avoid locking the database.</p>
+<p>So now we’ve got several sitemaps generated that include a huge number of URLs, generated automatically.  A script like this could be run at some specified interval to keep the sitemaps updated.</p>
+<h2 id="sitemap-index-files">Sitemap Index Files</h2>
+<p>Now we have to submit the sitemaps to Google.  But to avoid having to submit each sitemap individually, we can create a <a href="https://support.google.com/webmasters/answer/71453?hl=en">sitemap index</a> containing the locations of each sitemap (they have to be uploaded somewhere on your site).  A sitemap index is formatted very similarly to a regular sitemap  (see <a href="http://www.sitemaps.org/protocol.html">here</a>, at the “Using sitemap index files” section).  When the sitemap index is submitted, Google automatically submits the sitemaps it contains.  Sitemap indices are fairly simple; let’s look at how we can automatically generate one.</p>
+<pre><code>var generateOutput = function (files, callback) {
+    var output = &#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;\n\n&#39;;
+    output += &#39;&lt;sitemapindex xmlns=&quot;http://&#39; +
+        &#39;www.sitemaps.org/schemas/sitemap/0.9&quot;&gt;\n\n&#39;;
+
+    for ( var i = 0; i &lt; files.length; i++ ) {
+        output += &#39;\t&lt;sitemap&gt;\n\t\t&lt;loc&gt;&#39; +
+            &#39;http://www.bondpdf.com/sitemap_files/&#39; + files[i] +
+            &#39;&lt;/loc&gt;\n\t&lt;/sitemap&gt;\n&#39;;
+    }
+    output += &#39;\n&lt;/sitemapindex&gt;&#39;;
+
+    callback(null, output, files.length);
+};</code></pre>
+<p>Again, we generate a header, and then write each file passed to the function to a line of XML.  As above, this script could be run from time to time to keep things up to date.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Now that you’ve got your sitemap index, just go to Google Webmaster Tools, submit it, and wait.  Be patient; depending how many URLs you submitted, it can take several weeks or even longer for Google to get all the URLs indexed. But you can easily view the progress with Webmaster Tools.
+<img src="screenshot-1.jpg" alt="Sitemap info"></p>
+<p>We&#39;ve now made a large collection of poorly-linked pages available to Google, and thus more available to users.</p>
+
+				</article>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- end content -->
+
+<!-- footer -->
+<footer>
+	<section id="mainFooter">
+		<div class="container" id="footer">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="footerWidget">
+						<img src="../images/main-logo.png" alt="Mazira" id="footerLogo" height="30px">
+
+						<p><a href="https://mazira.com" title="Mazira, data management company">Mazira</a> is a data and
+							document management company. We build software to store and organize large data collections
+							so that it can become useful. Data by itself isn't very useful unless it is distilled into
+							useful information!</p>
+					</div>
+				</div>
+
+				<div class="col-sm-6">
+					<div class="footerWidget">
+
+						<h3>Mazira, LLC</h3>
+						<address>
+							<p><i class="icon-location"></i>316 E. Court Street<br>
+								Iowa City, IA 52240-4767 USA<br>
+								<i class="icon-phone"></i><a href="tel://1-866-319-6068">+1 (866) 319-6068</a> <br>
+								<i class="icon-mail-alt"></i><a href="mailto:info@mazira.com">info@mazira.com</a></p>
+						</address>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</footer>
+<section id="footerRights">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<p>Copyright © 2014 <a href="https://mazira.com" target="blank">Mazira, LLC</a>
+					<br/>All rights reserved.
+				</p>
+			</div>
+			<div class="col-sm-6">
+				<ul class="socialNetwork pull-right">
+					<li><a href="https://www.facebook.com/pages/Mazira/216219471762517" class="tips"
+						   title="follow us on Facebook"><i class="icon-facebook-1 iconRounded"></i></a></li>
+					<li><a href="https://twitter.com/Mazira" class="tips" title="follow us on Twitter"
+						   target="_blank"><i class="icon-twitter-bird iconRounded"></i></a></li>
+					<li><a href="http://www.linkedin.com/company/mazira" class="tips" title="follow us on Linkedin"><i
+							class="icon-linkedin-1 iconRounded"></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<script type='text/javascript'>(function () {
+	var done = false;
+	var script = document.createElement('script');
+	script.async = true;
+	script.type = 'text/javascript';
+	script.src = 'https://widget.purechat.com/VisitorWidget/WidgetScript';
+	document.getElementsByTagName('HEAD').item(0).appendChild(script);
+	script.onreadystatechange = script.onload = function (e) {
+		if ( !done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete') ) {
+			var w = new PCWidget({ c : '5b0f8ffb-7a8d-45a8-bd0b-7676d8d75d78', f : true });
+			done = true;
+		}
+	};
+})();</script>
+
+
+<!-- end footer -->
+
+<!-- end body -->
+
+<script type="text/javascript" src="../js-plugin/respond/respond.min.js"></script>
+<script type="text/javascript" src="../js-plugin/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="../js-plugin/jquery-ui/jquery-ui-1.8.23.custom.min.js"></script>
+<!-- third party plugins  -->
+<script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="../js-plugin/easing/jquery.easing.1.3.js"></script>
+
+<script type="text/javascript" src="../js-plugin/magnific-popup/jquery.magnific-popup.min.js"></script>
+<script type="text/javascript" src="../js-plugin/jquery.sharrre-1.3.4/jquery.sharrre-1.3.4.min.js"></script>
+
+<!-- Custom  -->
+<script type="text/javascript" src="../js/custom.js"></script>
+<script type="text/javascript" src="../js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>

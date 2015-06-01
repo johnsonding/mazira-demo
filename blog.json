@@ -1,0 +1,235 @@
+[
+	{
+		"title": "Web-API handlers with Compojure",
+		"author": "Uday Verma",
+		"date": "January 18, 2015",
+		"description": "Take the pain away of writing Web-API handlers in Compojure/Clojure by building macro based abstractions",
+		"tags": [
+			"API",
+			"webapi",
+			"Compojure",
+			"Clojure",
+			"Macros"
+		],
+		"preview": "## Sup guise?\n\nOne of the things we like about …",
+		"iso8601Date": "2015-01-18T00:00:00-06:00",
+		"basename": "web-api-handlers-with-compojure"
+	},
+	{
+		"title": "CSS3 Animated Scrolling Background with Multiple Parts",
+		"author": "Liz Silich",
+		"date": "2014/10/22",
+		"description": "Using positioning and 2D translations in CSS to create complex animated backgrounds.",
+		"tags": [
+			"CSS",
+			"CSS3",
+			"HTML"
+		],
+		"preview": "<style>\r\n    @-webkit-keyframes bgAnimate {\r\n     …",
+		"iso8601Date": "2014-10-22T00:00:00-05:00",
+		"basename": "css3-animated-scrolling-bg"
+	},
+	{
+		"title": "Testing with Promises",
+		"author": "Uday Verma",
+		"date": "2014/02/10",
+		"description": null,
+		"tags": [
+			"Node.js",
+			"JavaScript",
+			"promises",
+			"testing",
+			"unit testing"
+		],
+		"preview": "## Introduction\n\nAt Mazira we are slowly shifting …",
+		"iso8601Date": "2014-02-10T00:00:00-06:00",
+		"basename": "testing-promises"
+	},
+	{
+		"title": "When OCR is Just Not Enough...",
+		"author": "Anith Mathai",
+		"date": "2013/11/27",
+		"description": "Blog article by Anith Mathai",
+		"tags": [
+			"OCR",
+			"visualization"
+		],
+		"preview": "Optical Character Recognition (OCR), the science …",
+		"iso8601Date": "2013-11-27T00:00:00-06:00",
+		"basename": "when-ocr-is-just-not-enough"
+	},
+	{
+		"title": "Introduction to Load Balancing Using Node.js - Part 2",
+		"author": "Ross Johnson",
+		"date": "2013/11/11",
+		"description": "In this post, I will improve our PI example by using substack's seaport module to give the main application better information about available pi workers.",
+		"tags": [
+			"Node.js",
+			"JavaScript",
+			"load balancing"
+		],
+		"preview": "## Introduction\nIn my [previous post on load …",
+		"iso8601Date": "2013-11-11T00:00:00-06:00",
+		"basename": "introduction-load-balancing-nodejs-2"
+	},
+	{
+		"title": "Comparing the Speed of ImageMagick and GraphicsMagick",
+		"author": "Kazimier Smith",
+		"date": "2013/10/15",
+		"description": "A blog post about the efficiency of search highlighting with ImageMagick vs. GraphicsMagick",
+		"tags": [
+			"Node.js",
+			"JavaScript",
+			"ImageMagick",
+			"GraphicsMagick",
+			"highlighting"
+		],
+		"preview": "## Introduction\nImage manipulation is a very …",
+		"iso8601Date": "2013-10-15T00:00:00-05:00",
+		"basename": "comparing-speed-imagemagick-graphicsmagick"
+	},
+	{
+		"title": "Unstructured and Structured Data",
+		"author": "Anith Mathai",
+		"date": "2013/09/30",
+		"description": "There are also two kinds of data in this world: structured and unstructured. This blog post examines and contrasts the two types of data and explains how Mazira produces structured data.",
+		"tags": [
+			"unstructured data",
+			"structured data"
+		],
+		"preview": "“There are 10 kinds of people in this world, …",
+		"iso8601Date": "2013-09-30T00:00:00-05:00",
+		"basename": "unstructured-structured-data"
+	},
+	{
+		"title": "Minifying JavaScript with Grunt",
+		"author": "Daniel Short",
+		"date": "2013/09/20",
+		"description": "This post will cover JavaScript minification using Google Closure Compiler and Grunt.",
+		"tags": [
+			"Node.js",
+			"JavaScript",
+			"Grunt",
+			"Google Closure Compiler"
+		],
+		"preview": "##MINIFYING CODE\nWhen sending resources such as …",
+		"iso8601Date": "2013-09-20T00:00:00-05:00",
+		"basename": "minifying-javascript-grunt"
+	},
+	{
+		"title": "A Great Summer with Big Data at Mazira",
+		"author": "Mei Rao",
+		"date": "2013/09/11",
+		"description": "Blog article by Mei Rao",
+		"tags": [
+			"big data",
+			"internship",
+			"marketing",
+			"campaign"
+		],
+		"preview": "It was late in the spring of 2013, when I …",
+		"iso8601Date": "2013-09-11T00:00:00-05:00",
+		"basename": "great-summer-big-data-mazira"
+	},
+	{
+		"title": "Make Large Collections of Information Pages Available to Google Using Sitemaps",
+		"author": "Kazimier Smith",
+		"date": "2013/08/28",
+		"description": "A blog post about using XML sitemaps to make large collections of data pages accessible with Google search.",
+		"tags": [
+			"Node.js",
+			"JavaScript",
+			"Google",
+			"SEO"
+		],
+		"preview": "##Introduction\n\nHere at …",
+		"iso8601Date": "2013-08-28T00:00:00-05:00",
+		"basename": "make-large-collections-information-pages-available-google-using-sitemaps"
+	},
+	{
+		"title": "Introduction to Scraping with Node.js",
+		"author": "Daniel Short",
+		"date": "2013/08/15",
+		"description": "This tutorial will serve as an introduction to scraping Amazon reviews with Node.js.",
+		"tags": [
+			"Node.js",
+			"JavaScript",
+			"web scraping",
+			"jQuery"
+		],
+		"preview": "##Scraping with node.js\n\nWeb scraping involves …",
+		"iso8601Date": "2013-08-15T00:00:00-05:00",
+		"basename": "introduction-scraping-nodejs"
+	},
+	{
+		"title": "How Small is Big Data",
+		"author": "Anith Mathai",
+		"date": "2013/08/07",
+		"description": "Blog article by Anith Mathai",
+		"tags": [
+			"big data",
+			"structured data",
+			"unstructured data",
+			"return on information"
+		],
+		"preview": "Big data is quite the buzzword these days. The …",
+		"iso8601Date": "2013-08-07T00:00:00-05:00",
+		"basename": "how-small-big-data"
+	},
+	{
+		"title": "Optimal Image Conversion Settings for Tesseract OCR",
+		"author": "Kazimier Smith",
+		"date": "2013/07/17",
+		"description": "A blog post about the effectiveness of Tesseract OCR with different image conversion options.",
+		"tags": [
+			"Tesseract",
+			"OCR",
+			"Ghostscript",
+			"PDF"
+		],
+		"preview": "##Introduction\nOptical character recognition …",
+		"iso8601Date": "2013-07-17T00:00:00-05:00",
+		"basename": "optimal-image-conversion-settings-tesseract-ocr"
+	},
+	{
+		"title": "5 Reasons to Work for a Startup Company",
+		"author": "Mei Rao",
+		"date": "2013/07/09",
+		"description": "Mei Rao discusses the reasons she decided to join Mazira and her experience so far.",
+		"tags": [
+			"startup"
+		],
+		"preview": "## Introduction\nA lot of my friends asked me why …",
+		"iso8601Date": "2013-07-09T00:00:00-05:00",
+		"basename": "5-reasons-work-startup-company"
+	},
+	{
+		"title": "Simplify Client-Side Script Management for your Next Web Project",
+		"author": "Uday Verma",
+		"date": "2013/07/07",
+		"description": "We often code a lot of quick prototypes at Mazira.  Every time I start coding a new front-end I despise the process where I have to go out on the Internet and figure out CDNs or download locations for all the scripts I may need.  I also prefer to keep my scripts local to avoid surprises when things change and to be able to work when I am at places where my Internet connectivity is not as great (coding outside during the summer is awesome at Mazira's main office in Iowa City).",
+		"tags": [
+			"Node.js",
+			"JavaScript",
+			"client-side"
+		],
+		"preview": "## TL;DR\nCheck out the _fetch.js_ project hosted …",
+		"iso8601Date": "2013-07-07T00:00:00-05:00",
+		"basename": "simplify-client-side-script-management-your-next-web-project"
+	},
+	{
+		"title": "Introduction to Load Balancing Using Node.js - Part 1",
+		"author": "Ross Johnson",
+		"date": "2013/07/03",
+		"description": "This post introduces the topic of horizontal scaling and load balancing, and provides simple examples using node.js, along with JMeter results to show the performance effects of a common balancing technique.",
+		"tags": [
+			"Node.js",
+			"JavaScript",
+			"load balancing",
+			"JMeter"
+		],
+		"preview": "## Introduction\n\nAt Mazira, a lot of what we …",
+		"iso8601Date": "2013-07-03T00:00:00-05:00",
+		"basename": "introduction-load-balancing-nodejs"
+	}
+]

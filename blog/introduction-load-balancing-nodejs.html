@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]>
+<html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>
+<html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>
+<html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+	<!-- Basic Page Needs
+	================================================== -->
+	<meta charset="utf-8">
+	<title>Mazira - Introduction to Load Balancing Using Node.js - Part 1</title>
+	<meta name="description"
+		  content="This post introduces the topic of horizontal scaling and load balancing, and provides simple examples using node.js, along with JMeter results to show the performance effects of a common balancing technique. ">
+	<meta name="author" content="Ross Johnson, Mazira LLC">
+	<!-- Mobile Specific Metas
+	================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- CSS
+	================================================== -->
+	<!-- Bootstrap  -->
+	<link type="text/css" rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+	<!-- web font  -->
+	<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,800" rel="stylesheet" type="text/css">
+	<!-- plugin css  -->
+	<link rel="stylesheet" type="text/css" href="../js-plugin/animation-framework/animate.css"/>
+	<link rel="stylesheet" type="text/css" href="../js-plugin/magnific-popup/magnific-popup.css"/>
+	<!-- icon fonts -->
+	<link type="text/css" rel="stylesheet" href="../font-icons/custom-icons/css/custom-icons.css">
+	<link type="text/css" rel="stylesheet" href="../font-icons/custom-icons/css/custom-icons-ie7.css">
+	<!-- Custom css -->
+	<link type="text/css" rel="stylesheet" href="../css/layout.css">
+	<link type="text/css" id="colors" rel="stylesheet" href="../css/colors.css">
+	<link type="text/css" id="syntax" rel="stylesheet" href="../css/tomorrow.css">
+	<!--[if lt IE 9]>
+	<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
+	<script src="../js/modernizr-2.6.1.min.js"></script>
+	<!DOCTYPE html>
+<!--[if lt IE 7 ]>
+<html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>
+<html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>
+<html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+	<!-- Basic Page Needs
+	<script>
+
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-35559722-1', 'mazira.com');
+		ga('send', 'pageview');
+
+	</script>
+</head>
+<body data-spy="scroll" data-target="#scrollTarget" data-offset="150">
+
+<!-- body -->
+
+<!-- header -->
+<header id="mainHeader" class="navbar-fixed-top" role="banner">
+	<div class="container">
+		<nav class="navbar navbar-default scrollMenu" role="navigation">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+						data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span></button>
+				<a class="navbar-brand" href="../../"><img src="../images/main-logo.png"
+															 alt=""/></a></div>
+			<div class="collapse navbar-collapse navbar-ex1-collapse" id="scrollTarget">
+				<ul class="nav navbar-nav pull-right">
+					<li><a href="../../"><i class="icon-home-outline"></i>Home</a></li>
+					<li class="active"><a href="../blog"><i class="icon-comment"></i>Blog</a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+</header>
+<!-- end header -->
+
+<!-- content -->
+<section class="slice" id="news">
+	<div class="container imgHover">
+		<div class="row">
+			<div class="col-lg-10 col-lg-offset-1">
+				<article>
+					<h1>Introduction to Load Balancing Using Node.js - Part 1</h1>
+
+					<div class="subTitle">by Ross Johnson</div>
+					<div class="date">2013/07/03</div>
+					<h2 id="introduction">Introduction</h2>
+<p>At Mazira, a lot of what we develop takes the form of web services. While most of these are only used internally, it is still important that they are high-performance and resilient. These services need to be ready to churn through hundreds of gigabytes of documents at a moment’s notice, say, for example, if we need to reprocess one of our document clusters. For this type of performance, the ability of the system to scale, and to balance the load, is essential. This post introduces the topic of horizontal scaling and load balancing, and provides simple examples using <a href="http://nodejs.org/">node.js</a>, along with <a href="https://jmeter.apache.org/">JMeter</a> results to show the performance effects of a common balancing technique.</p>
+<h2 id="horizontal-scaling">Horizontal Scaling</h2>
+<p>When it comes to increasing the performance of websites and web services, there are only a couple of options: increase the efficiency of the code, or scale up the server infrastructure. Improving efficiency will only go so far, so at some point scaling is likely required. When it comes to scaling, there are two options: vertical scaling, or horizontal scaling. Vertical scaling means getting more powerful servers, with higher processing speed and more memory, while horizontal scaling means spreading the load across multiple individual servers. Vertical scaling will only go so far, and may not be cost effective. Horizontal scaling is a much more effective way of improving performance, and has much greater potential for future increases.</p>
+<h2 id="the-example">The Example</h2>
+<p>In order to demonstrate load balancing, we first need a sample application. I have chosen to create a web server that responds to any request with an estimation of pi. This estimation is calculated using <a href="https://en.wikipedia.org/wiki/Monte_Carlo_integration">Monte-Carlo integration</a>, which is an iterative approach. This example, while contrived, demonstrates load balancing well as the pi calculation simulates a non-trivial task that takes some processing time.</p>
+<h3 id="-a-name-listing1-a-listing-1-pi-server-js"><a name="listing1"></a>Listing 1: pi-server.js</h3>
+<pre><code>var args = process.argv.splice(2);
+var http = require(&#39;http&#39;);
+
+/**
+ * This function estimates pi using Monte-Carlo integration
+ * https://en.wikipedia.org/wiki/Monte_Carlo_integration
+ * @returns {number}
+ */
+function estimatePi() {
+    var n = 10000000, inside = 0, i, x, y;
+
+    for ( i = 0; i &lt; n; i++ ) {
+        x = Math.random();
+        y = Math.random();
+        if ( Math.sqrt(x * x + y * y) &lt;= 1 )
+            inside++;
+    }
+
+    return 4 * inside / n;
+}
+
+// Create a basic server that responds to any request with the pi estimation
+var server = http.createServer(function (req, res) {
+    res.writeHead(200, {&#39;Content-Type&#39; : &#39;text/plain&#39;});
+    res.end(&#39;Pi: &#39; + estimatePi());
+});
+
+// Listen to a specified port, or default to 8000
+server.listen(args[0] || 8000);</code></pre>
+<p>To run this example, put it into a file <em>pi-server.js</em>, browse to the folder in a command line and then execute:</p>
+<pre><code>$ node pi-server.js 8000</code></pre>
+<p>Now, going to <em>localhost:8000</em> in a web browser produces the following result:</p>
+<h3 id="figure-1-example-pi-server-result">Figure 1: Example Pi-Server Result</h3>
+<p><img src="pi-server-1.png" alt="Response from pi-server on port 8000"></p>
+<h2 id="load-testing">Load Testing</h2>
+<p>Now that we have our pi server running, it is time to load test it to get a baseline for performance. For this task I will be using <a href="https://jmeter.apache.org/">Apache JMeter</a>, which is a great tool for all sorts of automated behavior and performance testing. For the tests in this article, I set up JMeter to use 10 threads (&quot;users&quot;), each making 5 requests to <em>localhost:8000</em> (shown in Figure 2). For more information about JMeter and setting it up for load testing, see <a href="http://lincolnloop.com/blog/2011/sep/21/load-testing-jmeter-part-1-getting-started/">this blog post</a>.</p>
+<p>The metric that we will be using to test the performance of our server is the <em>response time</em>, or the time between when the client makes the request and when the pi result comes back. Shown in Figure 3 is the response time graph of our single-server setup.</p>
+<h3 id="figure-2-jmeter-test-setup">Figure 2: JMeter Test Setup</h3>
+<p><img src="JMeter_setup.png" alt="JMeter Test Setup"></p>
+<h3 id="figure-3-single-server-response">Figure 3: Single Server Response</h3>
+<p><img src="Response_Time_Graph_1.png" alt="Single Server Response Time Graph"></p>
+<p>This graph provides many key pieces of information. For one, the initial response times are less than 500 ms, which give an indication of the actual processing time required to estimate pi. Since JavaScript applications are only single threaded, our pi server can only be estimating pi once at any given time. Thus, if it gets multiple requests in quick succession, the later requests will take longer, as they can only process once the earlier requests have finished. From the graph, we can see that a number of responses took more than 2.5 seconds to return. These high response times are much higher than the actual time required to estimate pi, and indicate that the server is heavily loaded.</p>
+<h2 id="distributing-the-load">Distributing the Load</h2>
+<p>As I mentioned earlier, the server can only calculate pi requests one at at time, so how then can we improve the performance? The answer is to have multiple pi-servers running, and to distribute the requests between them. This will work well even on my laptop, as it has multiple cores which the separate pi servers can run on, but one can imagine the load actually being distributed across multiple physical machines.</p>
+<p>In order to distribute the load of our pi example, we will create a node.js load balancer which sits in front of our actual pi-servers, and passes the requests on to them in a round-robin fashion. That is, the first request will get forwarded to the first pi-server, the second request will get forwarded to the 2nd pi-server and so on, until we run out of pi-servers and start forwarding to the first one again.</p>
+<p>For this example, I will be running 3 pi-servers on ports 8001, 8002, and 8003. The load balancer will be listening on port 8000, so we will not have to change the JMeter test. To handle the actual forwarding of requests in our load balancer, we will be using the wonderful <a href="https://github.com/nodejitsu/node-http-proxy">node-http-proxy</a> module. Below is the code listing for the load balancer.</p>
+<h3 id="-a-name-listing2-a-listing-2-load-balancer-js"><a name="listing2"></a>Listing 2: load-balancer.js</h3>
+<pre><code>var arguments = process.argv.splice(2);
+var httpProxy = require(&#39;http-proxy&#39;);
+
+//
+// Addresses to use in the round robin proxy
+//
+var addresses = [
+    {
+        host: &#39;localhost&#39;,
+        port: 8001
+    },
+    {
+        host: &#39;localhost&#39;,
+        port: 8002
+    },
+    {
+        host: &#39;localhost&#39;,
+        port: 8003
+    }
+];
+
+var i = 0;
+httpProxy.createServer(function (req, res, proxy) {
+    proxy.proxyRequest(req, res, addresses[i]);
+
+    i = (i + 1) % addresses.length;
+}).listen(arguments[0] || 8000);</code></pre>
+<p>Now we will start up the 3 pi-servers and the load balancer.</p>
+<pre><code>$ node pi-server.js 8001 &amp;
+$ node pi-server.js 8002 &amp;
+$ node pi-server.js 8003 &amp;
+$ node load-balancer.js 8000</code></pre>
+<p>Note that the &quot;&amp;&quot; at the end of the commands causes the processed to run in the background. The processes must be killed manually later.</p>
+<p>Now, we can make requests to the individual pi-servers on ports 8001, 8002, or 8003, or we can make a request to the load balancer on port 8000. Running the JMeter test again, we can see a dramatic increase in performance (decrease in average response time) using our load balancer. A graph of the response time is shown in Figure 4.</p>
+<h3 id="-a-name-figure4-a-figure-4-load-balanced-response"><a name="figure4"></a>Figure 4: Load Balanced Response</h3>
+<p><img src="Response_Time_Graph_2.png" alt="Load Balanced Response Time Graph"></p>
+<p>By distributing the load between three separate pi-servers, we were able to drastically drop the average response time for our load-test and to decrease the maximum response time from nearly three seconds to under one second.</p>
+<h2 id="further-improvements">Further Improvements</h2>
+<p>Although we have drastically improved the overall performance of our application, our current solution is far from perfect. For one, the load balancer must be hard-coded with the location of the individual pi-servers. This is not ideal, as the balancer must be edited and restarted to add an additional pi-server. Additionally, if one of the pi-servers were to crash, the round-robin approach would still send it requests, causing every 3rd request to fail. A better solution would be to have the load balancer automatically discover pi-servers that are running, and to balance the load between those. Then, additional pi-servers can be started without touching the load balancer. This can be accomplished easily using the <a href="https://github.com/substack/seaport">seaport module</a> for node.js. A discussion of this will be saved for a future post.</p>
+<p>EDIT: <a href="introduction-load-balancing-nodejs-2">Part 2</a></p>
+
+				</article>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- end content -->
+
+<!-- footer -->
+<footer>
+	<section id="mainFooter">
+		<div class="container" id="footer">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="footerWidget">
+						<img src="../images/main-logo.png" alt="Mazira" id="footerLogo" height="30px">
+
+						<p><a href="https://mazira.com" title="Mazira, data management company">Mazira</a> is a data and
+							document management company. We build software to store and organize large data collections
+							so that it can become useful. Data by itself isn't very useful unless it is distilled into
+							useful information!</p>
+					</div>
+				</div>
+
+				<div class="col-sm-6">
+					<div class="footerWidget">
+
+						<h3>Mazira, LLC</h3>
+						<address>
+							<p><i class="icon-location"></i>316 E. Court Street<br>
+								Iowa City, IA 52240-4767 USA<br>
+								<i class="icon-phone"></i><a href="tel://1-866-319-6068">+1 (866) 319-6068</a> <br>
+								<i class="icon-mail-alt"></i><a href="mailto:info@mazira.com">info@mazira.com</a></p>
+						</address>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</footer>
+<section id="footerRights">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<p>Copyright © 2014 <a href="https://mazira.com" target="blank">Mazira, LLC</a>
+					<br/>All rights reserved.
+				</p>
+			</div>
+			<div class="col-sm-6">
+				<ul class="socialNetwork pull-right">
+					<li><a href="https://www.facebook.com/pages/Mazira/216219471762517" class="tips"
+						   title="follow us on Facebook"><i class="icon-facebook-1 iconRounded"></i></a></li>
+					<li><a href="https://twitter.com/Mazira" class="tips" title="follow us on Twitter"
+						   target="_blank"><i class="icon-twitter-bird iconRounded"></i></a></li>
+					<li><a href="http://www.linkedin.com/company/mazira" class="tips" title="follow us on Linkedin"><i
+							class="icon-linkedin-1 iconRounded"></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<script type='text/javascript'>(function () {
+	var done = false;
+	var script = document.createElement('script');
+	script.async = true;
+	script.type = 'text/javascript';
+	script.src = 'https://widget.purechat.com/VisitorWidget/WidgetScript';
+	document.getElementsByTagName('HEAD').item(0).appendChild(script);
+	script.onreadystatechange = script.onload = function (e) {
+		if ( !done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete') ) {
+			var w = new PCWidget({ c : '5b0f8ffb-7a8d-45a8-bd0b-7676d8d75d78', f : true });
+			done = true;
+		}
+	};
+})();</script>
+
+
+<!-- end footer -->
+
+<!-- end body -->
+
+<script type="text/javascript" src="../js-plugin/respond/respond.min.js"></script>
+<script type="text/javascript" src="../js-plugin/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="../js-plugin/jquery-ui/jquery-ui-1.8.23.custom.min.js"></script>
+<!-- third party plugins  -->
+<script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="../js-plugin/easing/jquery.easing.1.3.js"></script>
+
+<script type="text/javascript" src="../js-plugin/magnific-popup/jquery.magnific-popup.min.js"></script>
+<script type="text/javascript" src="../js-plugin/jquery.sharrre-1.3.4/jquery.sharrre-1.3.4.min.js"></script>
+
+<!-- Custom  -->
+<script type="text/javascript" src="../js/custom.js"></script>
+<script type="text/javascript" src="../js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
